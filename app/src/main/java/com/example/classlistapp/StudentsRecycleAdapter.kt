@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class StudentsRecycleAdapter(val context: Context, val students : List<Student>) :
@@ -32,6 +33,10 @@ class StudentsRecycleAdapter(val context: Context, val students : List<Student>)
 
     override fun getItemCount() = students.size
 
+    fun removeStudent(position: Int) {
+        DataManager.students.removeAt(position)
+        notifyDataSetChanged()
+    }
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)  {
         val textName = itemView.findViewById<TextView>(R.id.nameTextView)
@@ -46,6 +51,17 @@ class StudentsRecycleAdapter(val context: Context, val students : List<Student>)
                 intent.putExtra(STUDENT_POSITION_KEY , studentPosition)
                 context.startActivity(intent)
             }
+
+            deleteButton.setOnClickListener {
+                removeStudent(studentPosition)
+            }
+
+            presentButton.setOnClickListener {
+                DataManager.students[studentPosition].present = presentButton.isChecked
+                Toast.makeText(context, "${DataManager.students[studentPosition].name} presence is changed",
+                Toast.LENGTH_SHORT).show()
+            }
+
         }
 
     }

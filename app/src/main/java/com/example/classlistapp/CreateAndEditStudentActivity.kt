@@ -7,7 +7,7 @@ import android.widget.EditText
 import android.widget.TextView
 
 const val STUDENT_POSITION_KEY = "STUDENT_POSITION"
-
+const val POSITION_NOT_SET = -1
 
 class CreateAndEditStudentActivity : AppCompatActivity() {
 
@@ -21,14 +21,18 @@ class CreateAndEditStudentActivity : AppCompatActivity() {
         nameEditText = findViewById(R.id.nameEditText)
         classEditText = findViewById(R.id.classEditText)
         val saveButton = findViewById<Button>(R.id.saveButton)
-        val studentPosition =  intent.getIntExtra(STUDENT_POSITION_KEY, 0)
+        val studentPosition =  intent.getIntExtra(STUDENT_POSITION_KEY, POSITION_NOT_SET)
 
-        displayStudent(studentPosition)
-
-        saveButton.setOnClickListener {
-            editStudent(studentPosition)
+        if( studentPosition != POSITION_NOT_SET) { // edit student
+            displayStudent(studentPosition)
+            saveButton.setOnClickListener {
+                editStudent(studentPosition)
+            }
+        } else {                                   // add student
+            saveButton.setOnClickListener {
+                addNewStudent()
+            }
         }
-
 
         // editStudent(studentPosition)
 
@@ -49,5 +53,15 @@ class CreateAndEditStudentActivity : AppCompatActivity() {
 
         finish()
     }
+
+    fun addNewStudent() {
+        val name = nameEditText.text.toString()
+        val className = classEditText.text.toString()
+
+        val student = Student(name, className)
+        DataManager.students.add(student)
+        finish()
+    }
+
 
 }
