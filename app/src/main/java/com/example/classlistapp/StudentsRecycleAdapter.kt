@@ -1,6 +1,7 @@
 package com.example.classlistapp
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +27,7 @@ class StudentsRecycleAdapter(val context: Context, val students : List<Student>)
         holder.textName.text = student.name
         holder.textClassName.text = student.className
         holder.presentButton.isChecked = student.present
-
-
+        holder.studentPosition = position
     }
 
     override fun getItemCount() = students.size
@@ -38,8 +38,15 @@ class StudentsRecycleAdapter(val context: Context, val students : List<Student>)
         val textClassName = itemView.findViewById<TextView>(R.id.classTextView)
         val presentButton = itemView.findViewById<CheckBox>(R.id.checkBox)
         val deleteButton = itemView.findViewById<ImageButton>(R.id.imageButton)
+        var studentPosition = 0
 
-
+        init {
+            itemView.setOnClickListener {
+                val intent = Intent(context, CreateAndEditStudentActivity::class.java)
+                intent.putExtra(STUDENT_POSITION_KEY , studentPosition)
+                context.startActivity(intent)
+            }
+        }
 
     }
 }

@@ -19,8 +19,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = StudentsRecycleAdapter(this, DataManager.students)
 
-
     }
 
+    override fun onResume() {
+        super.onResume()
 
+        recyclerView.adapter?.notifyDataSetChanged()
+
+    }
 }
